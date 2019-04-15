@@ -3,17 +3,29 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+// 引入json解析中间件
+var bodyParser = require('body-parser');
+
+var app = express();
+
+// 添加json解析
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({extended: false}));
+// 创建 application/x-www-form-urlencoded 编码解析
+// var urlEncodedParser = bodyParser.urlencoded({ extended: false })
 
 // 处理函数引入
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var loadNewsRouter = require('./routes/loadNews');
-// ---
-
 var getTestRouter = require('./routes/getTest');
+// get
+var loadNewsRouter = require('./routes/loadNews');
+// post
 var postTestRouter = require('./routes/postTest');
+var loginRouter = require('./routes/login')
+var registerRouter = require('./routes/register')
 
-var app = express();
+// ---
 
 // 使用静态资源文件
 app.use(express.static('public'));
@@ -49,8 +61,11 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
  
 app.use('/getTest', getTestRouter);
-app.use('/postTest', postTestRouter);
 app.use('/loadNews', loadNewsRouter);
+
+app.post("/postTest", postTestRouter);
+app.post("/login", loginRouter);
+app.post("/register", registerRouter);
 // ---
 
 // catch 404 and forward to error handler

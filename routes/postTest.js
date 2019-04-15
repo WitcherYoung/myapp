@@ -12,8 +12,10 @@ var data = {
 	ret_msg: "请求成功"
 }
 
-router.get('/', function (req, res, next) {
-    console.log(req.params);
+function postTestRouter(req, res, next) {
+    // console.log(req.params);
+    // console.log(req.query);
+    // console.log(req.body);		// post请求参数
 	db.sql('select * from Users', function (err, result) {
 		if (err) {
 			console.log(err);
@@ -21,8 +23,8 @@ router.get('/', function (req, res, next) {
 		}
 		data.data = result;
 		res.json(data);
-		console.log('记录总数为 :', result.length);
+		console.log('post 记录总数为 :', result.length);
 	});
-});
+};
 
-module.exports = router;
+module.exports = postTestRouter;

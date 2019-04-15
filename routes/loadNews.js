@@ -15,17 +15,17 @@ var params = {
 	newsType: null,
 }
 var data = {
-	ret_code: 200,
-	data: {},
-	isSuccess: true,
-	ret_msg: "请求成功"
-}
-var errData = {
-	ret_code: null,
-	err_msg: null,
-	isSuccess: true,
-	ret_msg: "请求失败"
-}
+		ret_code: 200,
+		data: {},
+		isSuccess: true,
+		ret_msg: "请求成功"
+	},
+	errData = {
+		ret_code: null,
+		err_msg: null,
+		isSuccess: true,
+		ret_msg: "请求失败"
+	}
 
 // 分页查询
 // select top 10 * from News where Nid not in
