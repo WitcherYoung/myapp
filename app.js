@@ -19,7 +19,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var getTestRouter = require('./routes/getTest');
 // get
-var loadNewsRouter = require('./routes/loadNews');
+var loadArticlesRouter = require('./routes/loadArticles');
 // post
 var postTestRouter = require('./routes/postTest');
 var loginRouter = require('./routes/login')
@@ -61,7 +61,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
  
 app.use('/getTest', getTestRouter);
-app.use('/loadNews', loadNewsRouter);
+app.use('/loadArticles', loadArticlesRouter);
 
 app.post("/postTest", postTestRouter);
 app.post("/login", loginRouter);

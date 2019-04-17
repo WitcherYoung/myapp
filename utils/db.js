@@ -4,7 +4,7 @@ var db = {};
 var config = {
     user: 'sa',
     password: 'WEIzhe',
-    server: '10.108.191.104',
+    server: '10.108.130.148',
     port: 1433,
     driver: 'msnodesql',
     database: 'recommendedsystem',
