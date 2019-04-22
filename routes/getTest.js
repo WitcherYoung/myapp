@@ -15,7 +15,7 @@ var data = {
 router.get('/', function (req, res, next) {
 	db.sql('select * from Users', function (err, result) {
 		if (err) {
-			console.log(err);
+			console.error(err);
 			return;
 		}
 		data.data = result;

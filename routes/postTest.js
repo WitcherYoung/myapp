@@ -18,7 +18,7 @@ function postTestRouter(req, res, next) {
     // console.log(req.body);		// post请求参数
 	db.sql('select * from Users', function (err, result) {
 		if (err) {
-			console.log(err);
+			console.error(err);
 			return;
 		}
 		data.data = result;

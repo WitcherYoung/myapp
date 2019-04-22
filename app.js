@@ -20,10 +20,16 @@ var usersRouter = require('./routes/users');
 var getTestRouter = require('./routes/getTest');
 // get
 var loadArticlesRouter = require('./routes/loadArticles');
+var detailsRouter = require('./routes/details');
+var collectedLikedRouter = require('./routes/getCollectedLiked');
+var getTagsRouter = require('./routes/getTags');
 // post
 var postTestRouter = require('./routes/postTest');
-var loginRouter = require('./routes/login')
-var registerRouter = require('./routes/register')
+var loginRouter = require('./routes/login');
+var registerRouter = require('./routes/register');
+var collectRouter = require('./routes/collect');
+var likeRouter = require('./routes/like');
+var saveTagsRouter = require('./routes/saveTags');
 
 // ---
 
@@ -62,10 +68,16 @@ app.use('/users', usersRouter);
  
 app.use('/getTest', getTestRouter);
 app.use('/loadArticles', loadArticlesRouter);
+app.use('/details', detailsRouter);
+app.use('/collectedLiked', collectedLikedRouter);
+app.use('/tags', getTagsRouter);
 
 app.post("/postTest", postTestRouter);
 app.post("/login", loginRouter);
 app.post("/register", registerRouter);
+app.post("/collect", collectRouter);
+app.post("/like", likeRouter);
+app.post("/saveTags", saveTagsRouter);
 // ---
 
 // catch 404 and forward to error handler

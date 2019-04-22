@@ -36,7 +36,7 @@ function loginRouter(req, res, next) {
         sql = sqlStrFn(params.username, params.pwd);
         db.sql(sql, function (err, result) {
             if (err) {
-                console.log(err);
+                console.error(err);
                 return;
             }
             if(result.recordset.length == 1) {

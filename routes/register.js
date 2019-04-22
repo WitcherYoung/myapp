@@ -65,7 +65,7 @@ function registerRouter(req, res, next) {
         sql = selectSqlStrFn(params.username, params.pwd);
         db.sql(sql, function (err, result) {
             if (err) {
-                console.log(err);
+                console.error(err);
                 return res.json(errData);
             }
             if(result.recordset.length == 1) {
@@ -76,7 +76,7 @@ function registerRouter(req, res, next) {
                 sql = selectUidFn();
                 db.sql(sql, function (err, result) {
                     if (err) {
-                        console.log(err);
+                        console.error(err);
                         return res.json(errData);
                     }
                     let uid = result.recordset.length;  // 计算Uid值
@@ -85,7 +85,7 @@ function registerRouter(req, res, next) {
                     // console.log("insertSqlStrFn ", sql);
                     db.sql(sql, function (err, result) {
                         if (err) {
-                            console.log(err);
+                            console.error(err);
                             return res.json(errData);
                         }
                         // console.log(result.rowsAffected);

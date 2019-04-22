@@ -4,7 +4,7 @@ var db = {};
 var config = {
     user: 'sa',
     password: 'WEIzhe',
-    server: '10.108.130.148',
+    server: '10.108.214.92',
     port: 1433,
     driver: 'msnodesql',
     database: 'recommendedsystem',
@@ -22,24 +22,24 @@ var config = {
 db.sql = function (sql, callBack) {
     var connection = new mssql.ConnectionPool(config, function (err) {
         if (err) {
-            console.log(err);
+            console.error(err);
             return;
         }
         var ps = new mssql.PreparedStatement(connection);
         ps.prepare(sql, function (err) {
             if (err) {
-                console.log(err);
+                console.error(err);
                 return;
             }
             ps.execute('', function (err, result) {
                 if (err) {
-                    console.log(err);
+                    console.error(err);
                     return;
                 }
 
                 ps.unprepare(function (err) {
                     if (err) {
-                        console.log(err);
+                        console.error(err);
                         callback(err, null);
                         return;
                     }

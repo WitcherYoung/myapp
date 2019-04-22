@@ -5,8 +5,7 @@ var router = express.Router();
 var myExpress = express();
 var db = require('../utils/db.js');
 
-var pageSize = 10, 
-	sql = "", 
+var	sql = "", 
 	newsSqlStr = "Nid id, Nimage_url img,Ntitle title,Ntype tag,Ntime time,Ncontent summary,Ngoods liked", 
 	foodSqlStr = "Fid id, Fimage_url img,Fname title,Ftype tag,Ftime time,Ffeature summary,Fgoods liked,Fphone phone,Faddress address", 
 	playSqlStr = "Aid id, Aimage_url img,Aname title,Atype tag,Atime time,Afeature summary,Agoods liked,Aphone phone,Aaddress address", 
@@ -29,18 +28,8 @@ var data = {
 		ret_msg: "请求失败"
 	}
 
-// 分页查询
-// select top 10 * from News where Nid not in
-// (
-//  --40是这么计算出来的：10*(5-1)
-//  select top 40 Nid from News order by cast(Nid as int)
-// )
-// order by cast(Nid as int); 
-
-function sqlStrFn(pageNum, sqlStr, tableName, colName) {
-	return "select top " + pageSize + " " + sqlStr + " from " + tableName + " where " + colName + 
-		   " not in( select top " + pageSize * (pageNum-1) + " " + colName + " from " + tableName + " order by cast(" + colName + 
-		   " as int) ) order by cast(" + colName + " as int); "
+function sqlStrFn(sqlStr, tableName, colName, newsId) {
+	return "select " + sqlStr + " from " + tableName + " where " + colName + " = '" + newsId + "';"
 }
 
 // newsType; 1资讯 2没美食 3游玩 4趣事
@@ -48,19 +37,19 @@ router.get('/', function (req, res, next) {
 	try {
 		params.newsType = parseInt(req.query.newsType);
 		// params.filterType = parseInt(req.query.filterType);
-		params.pageNum = parseInt(req.query.pageNum);
+		params.newsId = parseInt(req.query.newsId);
 		switch (params.newsType) {
 			case 1:
-				sql = sqlStrFn(params.pageNum, newsSqlStr, "News", "Nid");
+				sql = sqlStrFn(newsSqlStr, "News", "Nid", params.newsId);
 				break;
 			case 2:
-				sql = sqlStrFn(params.pageNum, foodSqlStr, "Food", "Fid");
+				sql = sqlStrFn(foodSqlStr, "Food", "Fid", params.newsId);
 				break;
 			case 3:
-				sql = sqlStrFn(params.pageNum, playSqlStr, "Amuse", "Aid");
+				sql = sqlStrFn(playSqlStr, "Amuse", "Aid", params.newsId);
 				break;
 			case 4:
-				sql = sqlStrFn(params.pageNum, funSqlStr, "Duanzi", "Did");
+				sql = sqlStrFn(funSqlStr, "Duanzi", "Did", params.newsId);
 				break;
 			default:
 				throw {
@@ -72,23 +61,27 @@ router.get('/', function (req, res, next) {
 			if (err) {
 				console.error(err);
 				return;
-			}
-			data.data.articleList = result.recordset;
-			// 去除换行符和多余空格
-			if(params.newsType ==1 || params.newsType ==4) {
-				data.data.articleList.forEach((item, index, array) => {
-					array[index].summary = array[index].summary.replace(/(<br[^>]*>|\s*)/g, "");
-					array[index].summary.trim();
-					array[index].img = 'http://localhost:3000/public/' + array[index].img;
-				});
-			}else {
-				data.data.articleList.forEach((item, index, array) => {
-					array[index].img = 'http://localhost:3000/public/' + array[index].img;
-				});
-			}
-			
-			res.json(data);
-			console.log('查询到记录总数为 :', result.recordset.length);
+            }
+            if(result.recordset[0]) {
+                data.data.article = result.recordset[0];
+                // 去除换行符和多余空格
+                if(params.newsType ==1 || params.newsType ==4) {
+                    let summaryArr = null;
+                    data.data.article.summary.trim();
+                    summaryArr = data.data.article.summary.split("<br/>");
+                    summaryArr.forEach((item, index, array) => {
+                        array[index] = "<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + item + "</span>"
+                    });
+                    data.data.article.summary = summaryArr.join("<br/>")
+                }
+                data.data.article.img = 'http://localhost:3000/public/' + data.data.article.img;
+                res.json(data);
+                console.log('查询到记录总数为 :', result.recordset.length);
+            }else {
+                errData.ret_code = 500;
+                errData.err_msg = "获取资讯详情出错",
+                res.json(errData);
+            }
 		});
 	} catch (error) {
 		console.error(error)
