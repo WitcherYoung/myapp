@@ -13,6 +13,7 @@ var data = {
 }
 
 router.get('/', function (req, res, next) {
+	// console.log(req.query)
 	db.sql('select * from Users', function (err, result) {
 		if (err) {
 			console.error(err);

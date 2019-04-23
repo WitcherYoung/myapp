@@ -23,6 +23,9 @@ var loadArticlesRouter = require('./routes/loadArticles');
 var detailsRouter = require('./routes/details');
 var collectedLikedRouter = require('./routes/getCollectedLiked');
 var getTagsRouter = require('./routes/getTags');
+var getStaredApprovedRouter = require('./routes/getStaredApproved');
+var getCommentsRouter = require('./routes/getComments');
+var getInfoRouter = require('./routes/getPersonalInfo');
 // post
 var postTestRouter = require('./routes/postTest');
 var loginRouter = require('./routes/login');
@@ -30,6 +33,8 @@ var registerRouter = require('./routes/register');
 var collectRouter = require('./routes/collect');
 var likeRouter = require('./routes/like');
 var saveTagsRouter = require('./routes/saveTags');
+var addCommentRouter = require('./routes/addComment');
+var updateInfoRouter = require('./routes/updatePersonalInfo');
 
 // ---
 
@@ -71,6 +76,9 @@ app.use('/loadArticles', loadArticlesRouter);
 app.use('/details', detailsRouter);
 app.use('/collectedLiked', collectedLikedRouter);
 app.use('/tags', getTagsRouter);
+app.use('/staredApproved', getStaredApprovedRouter);
+app.use('/getComments', getCommentsRouter);
+app.use('/getPersonalInfo', getInfoRouter);
 
 app.post("/postTest", postTestRouter);
 app.post("/login", loginRouter);
@@ -78,6 +86,8 @@ app.post("/register", registerRouter);
 app.post("/collect", collectRouter);
 app.post("/like", likeRouter);
 app.post("/saveTags", saveTagsRouter);
+app.post("/addComment", addCommentRouter);
+app.post("/updateInfo", updateInfoRouter);
 // ---
 
 // catch 404 and forward to error handler

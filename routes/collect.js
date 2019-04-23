@@ -82,6 +82,7 @@ function collectRouter(req, res, next) {
                     errMsg: "params.newsType is required"
                 }
         }
+        console.log(params);
         sql = sqlStrFn(table.name, table.colName, params.name, params.articleId);
         db.sql(sql, function (err, result) {
             if (err) {
@@ -117,8 +118,9 @@ function collectRouter(req, res, next) {
                     })
                 }
             } else {
-                // 用户未进行过收藏操作 insert
-                sqlInsert = sqlStrInsertFn(table.name, table.colName, params.name, params.isCollected, params.newsType, params.articleId)
+                // 用户未进行过收藏操作 sqlStrInsertFn(tableName, colName, userName, articleId, isCollected)
+                sqlInsert = sqlStrInsertFn(table.name, table.colName, params.name, params.articleId, params.isCollected);
+                console.log(sqlInsert);
                 // 插入数据, 回调函数中再次查询返回结果
                 db.sql(sqlInsert, function (err, result) {
                     if (err) {

@@ -24,7 +24,7 @@ var data = {
         ret_msg: "请求失败"
     }
 
-function SqlNotSelectedFn(username) {
+function SqlNotSelectedFn() {
     // select * from Tags where Tid not in (select Tid from U_Tags where Uid = '1')
     // return "select Tid 'key', Tname label from Tags where Tid not in (select Tid from U_Tags where Uid = (" + "select Uid from Users where Uusername = '" + username + "'));";
     return "select Tid 'key', Tname label from Tags"
@@ -40,7 +40,7 @@ router.get('/', function (req, res, next) {
     // console.log(req.query);		// get请求参数
     try {
         params.name = req.query.name;
-        sqlNotSelected = SqlNotSelectedFn(params.name);
+        sqlNotSelected = SqlNotSelectedFn();
         // console.log(sqlNotSelected);
         db.sql(sqlNotSelected, function (err, result) {
             if (err) {

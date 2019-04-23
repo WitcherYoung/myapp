@@ -25,7 +25,7 @@ var data = {
 
 function sqlStrFn(username, pwd) {
     // console.log(username, pwd);
-    return "select Uname name, Usex sex, Uimage_url image_url from Users where Uusername = '" + username + "' and Upassword = '" + pwd + "'";
+    return "select Uusername username, Uname name, Usex sex, Uimage_url image_url from Users where Uusername = '" + username + "' and Upassword = '" + pwd + "'";
 }
 
 function loginRouter(req, res, next) {
@@ -41,6 +41,7 @@ function loginRouter(req, res, next) {
             }
             if(result.recordset.length == 1) {
                 data.data.userInfo = result.recordset[0];
+                data.data.userInfo.source_url = data.data.userInfo.image_url;
                 data.data.userInfo.image_url = 'http://localhost:3000/public/' + data.data.userInfo.image_url;
                 res.json(data);
             }else {
