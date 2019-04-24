@@ -26,6 +26,8 @@ var getTagsRouter = require('./routes/getTags');
 var getStaredApprovedRouter = require('./routes/getStaredApproved');
 var getCommentsRouter = require('./routes/getComments');
 var getInfoRouter = require('./routes/getPersonalInfo');
+var searchRouter = require('./routes/search');
+var recommendRouter = require('./routes/getRecommend');
 // post
 var postTestRouter = require('./routes/postTest');
 var loginRouter = require('./routes/login');
@@ -35,6 +37,7 @@ var likeRouter = require('./routes/like');
 var saveTagsRouter = require('./routes/saveTags');
 var addCommentRouter = require('./routes/addComment');
 var updateInfoRouter = require('./routes/updatePersonalInfo');
+var logoutRouter = require('./routes/postLogout');
 
 // ---
 
@@ -70,7 +73,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // 接口响应路径
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
- 
+//  get请求路由
 app.use('/getTest', getTestRouter);
 app.use('/loadArticles', loadArticlesRouter);
 app.use('/details', detailsRouter);
@@ -79,7 +82,9 @@ app.use('/tags', getTagsRouter);
 app.use('/staredApproved', getStaredApprovedRouter);
 app.use('/getComments', getCommentsRouter);
 app.use('/getPersonalInfo', getInfoRouter);
-
+app.use('/searchQuery', searchRouter);
+app.use('/recommend', recommendRouter);
+// post请求路由
 app.post("/postTest", postTestRouter);
 app.post("/login", loginRouter);
 app.post("/register", registerRouter);
@@ -87,7 +92,7 @@ app.post("/collect", collectRouter);
 app.post("/like", likeRouter);
 app.post("/saveTags", saveTagsRouter);
 app.post("/addComment", addCommentRouter);
-app.post("/updateInfo", updateInfoRouter);
+app.post("/logout", logoutRouter);
 // ---
 
 // catch 404 and forward to error handler

@@ -37,30 +37,50 @@ var data = {
 // )
 // order by cast(Nid as int); 
 
-function sqlStrFn(pageNum, sqlStr, tableName, colName) {
-	return "select top " + pageSize + " " + sqlStr + " from " + tableName + " where " + colName + 
-		   " not in( select top " + pageSize * (pageNum-1) + " " + colName + " from " + tableName + " order by cast(" + colName + 
-		   " as int) ) order by cast(" + colName + " as int); "
+function sqlStrFn(pageNum, filterType, sqlStr, tableName, colName, newsType) {
+	let retSqlStr = "", orderStr = "";
+	switch(filterType) {
+		case 1:	// 根据时间
+			orderStr = newsType + "time" + " desc";
+			retSqlStr = "select top " + pageSize + " " + sqlStr + " from " + tableName + " where " + colName + 
+			" not in( select top " + pageSize * (pageNum-1) + " " + colName + " from " + tableName + " order by " + orderStr + 
+			" ) order by " + orderStr + "; ";
+			break
+		case 2:// 根据点赞
+			orderStr = newsType + "goods";
+			retSqlStr = "select top " + pageSize + " " + sqlStr + " from " + tableName + " where " + colName + 
+			" not in( select top " + pageSize * (pageNum-1) + " " + colName + " from " + tableName + " order by cast(" + orderStr + 
+			" as int) desc ) order by cast(" + orderStr + " as int) desc; ";
+			break
+		default:
+			throw {
+				errCode: 400,
+				errMsg: "paramType(filterType = " + filterType + ") error"
+			}
+	}
+	return retSqlStr;
 }
 
 // newsType; 1资讯 2没美食 3游玩 4趣事
 router.get('/', function (req, res, next) {
+	// req.query	get请求
 	try {
 		params.newsType = parseInt(req.query.newsType);
-		// params.filterType = parseInt(req.query.filterType);
+		params.filterType = parseInt(req.query.filterType);
 		params.pageNum = parseInt(req.query.pageNum);
+		// console.log(params);
 		switch (params.newsType) {
 			case 1:
-				sql = sqlStrFn(params.pageNum, newsSqlStr, "News", "Nid");
+				sql = sqlStrFn(params.pageNum, params.filterType, newsSqlStr, "News", "Nid", "N");
 				break;
 			case 2:
-				sql = sqlStrFn(params.pageNum, foodSqlStr, "Food", "Fid");
+				sql = sqlStrFn(params.pageNum, params.filterType, foodSqlStr, "Food", "Fid", "F");
 				break;
 			case 3:
-				sql = sqlStrFn(params.pageNum, playSqlStr, "Amuse", "Aid");
+				sql = sqlStrFn(params.pageNum, params.filterType, playSqlStr, "Amuse", "Aid", "A");
 				break;
 			case 4:
-				sql = sqlStrFn(params.pageNum, funSqlStr, "Duanzi", "Did");
+				sql = sqlStrFn(params.pageNum, params.filterType, funSqlStr, "Duanzi", "Did", "D");
 				break;
 			default:
 				throw {
@@ -68,6 +88,7 @@ router.get('/', function (req, res, next) {
 					errMsg: "params.newsType is required"
 				}
 		}
+		// console.log(sql);
 		db.sql(sql, function (err, result) {
 			if (err) {
 				console.error(err);

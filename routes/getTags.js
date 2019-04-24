@@ -53,7 +53,7 @@ router.get('/', function (req, res, next) {
             data.data.notSelected = result.recordset;
             console.log('notSelected 记录总数为 :', result.recordset.length);
             sqlSelected = SqlSelectedFn(params.name);
-            // console.log(sqlSelected);
+            console.log(sqlSelected);
             db.sql(sqlSelected, function (err, result) {
                 if (err) {
                     console.error(err);
@@ -63,6 +63,7 @@ router.get('/', function (req, res, next) {
                     };
                 }
                 // console.log(result.recordset[0].Tid_str.split("-"))  ["1", "3"]
+                console.log(result.recordset[0]);
                 let selectedArr = result.recordset[0].Tid_str.split("-");
                 data.data.selected = selectedArr.map(item => {
                     return parseInt(item);
