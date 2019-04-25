@@ -5,6 +5,11 @@ var router = express.Router();
 var myExpress = express();
 var db = require('../utils/db.js');
 
+var sql="",
+	param = {
+		username: null
+	};
+
 var data = {
 	ret_code: 200,
 	data: {},
@@ -12,18 +17,23 @@ var data = {
 	ret_msg: "请求成功"
 }
 
+function sqlFn(username) {
+	return "drop view V_recommend_" + username + ";"
+}
+
 function postTestRouter(req, res, next) {
     // console.log(req.params);
     // console.log(req.query);
-    // console.log(req.body);		// post请求参数
-	db.sql('select * from Users', function (err, result) {
+	console.log(req.body);		// post请求参数
+	param.username = req.body.username;
+	sql = sqlFn(param.username);
+	db.sql(sql, function (err, result) {
 		if (err) {
 			console.error(err);
 			return;
 		}
-		data.data = result;
 		res.json(data);
-		console.log('post 记录总数为 :', result.length);
+		console.log("postTestRouter done");
 	});
 };
 

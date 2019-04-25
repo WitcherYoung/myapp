@@ -92,6 +92,7 @@ app.post("/collect", collectRouter);
 app.post("/like", likeRouter);
 app.post("/saveTags", saveTagsRouter);
 app.post("/addComment", addCommentRouter);
+app.post("/updateInfo", updateInfoRouter);
 app.post("/logout", logoutRouter);
 // ---
 
